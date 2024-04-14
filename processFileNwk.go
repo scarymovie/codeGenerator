@@ -26,6 +26,10 @@ func getYamlName(path string) string {
 }
 
 func generateFile(tmpl *template.Template, yamlName string, operationId string, fileType string) {
+	if operationId == "" {
+		fmt.Println("Warning: operationId is empty. Skipping file generation.")
+		return
+	}
 	fileName := fmt.Sprintf("%s%s.php", strings.Title(operationId), fileType)
 
 	file, err := os.Create(fileName)
