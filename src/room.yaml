@@ -17,7 +17,7 @@ paths:
       operationId: getRooms
       responses:
         '200':
-          description: C
+          description: Выводит список всех доступных лобби
           content:
             application/json:
               schema:

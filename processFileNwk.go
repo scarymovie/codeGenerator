@@ -81,6 +81,9 @@ func generateSchemaFile(tmpl *template.Template, path string, schemaName string,
 	properties := make(map[string]map[string]string)
 	for propName, prop := range schema.Properties {
 		propType := prop.Type
+		if propType == "integer" {
+			propType = "int"
+		}
 		if !contains(schema.Required, propName) {
 			propType += "?"
 		}

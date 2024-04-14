@@ -11,6 +11,18 @@ import (
 type OpenAPI struct {
 	Paths map[string]map[string]struct {
 		OperationId string `yaml:"operationId"`
+		Responses   map[string]struct {
+			Description string `yaml:"description"`
+			Content     map[string]struct {
+				Schema struct {
+					Type  string `yaml:"type"`
+					Items struct {
+						Ref string `yaml:"$ref"`
+					} `yaml:"items"`
+					Ref string `yaml:"$ref"`
+				} `yaml:"schema"`
+			} `yaml:"content"`
+		} `yaml:"responses"`
 	} `yaml:"paths"`
 	Components struct {
 		Schemas map[string]struct {
@@ -68,4 +80,5 @@ func processFile(path string) {
 	processFileAction(path, openAPI)
 	processFileDefault(path, openAPI)
 	processSchemas(path, openAPI)
+	processResponses(path, openAPI)
 }

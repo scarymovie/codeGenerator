@@ -6,9 +6,8 @@ namespace App\Api\{{.Module}}\Api;
 
 class GetRoomsResult200
 {
-    /** @param {{.NwkDtoArray}}[] $content */
     public function __construct(
-        public array $content,
+        public {{.NwkDto}} $content,
     ) {
     }
 }
