@@ -12,7 +12,7 @@ servers:
 
 paths:
 
-  /api/getRooms:
+  /api/room/list:
     get:
       operationId: getRooms
       responses:
