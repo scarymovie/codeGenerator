@@ -1,36 +1,15 @@
-<components>
-    <schemas>
-        {{range .Schemas}}
-        <schema>
-            <name>{{.Name}}</name>
-            <type>{{.Type}}</type>
-            {{if .Description}}
-            <description>{{.Description}}</description>
-            {{end}}
-            {{if .Required}}
-            <required>
-                {{range .Required}}
-                <property>{{.}}</property>
-                {{end}}
-            </required>
-            {{end}}
-            {{if .Properties}}
-            <properties>
-                {{range .Properties}}
-                <property>
-                    <name>{{.Name}}</name>
-                    <type>{{.Type}}</type>
-                    {{if .Format}}
-                    <format>{{.Format}}</format>
-                    {{end}}
-                    {{if .Description}}
-                    <description>{{.Description}}</description>
-                    {{end}}
-                </property>
-                {{end}}
-            </properties>
-            {{end}}
-        </schema>
-        {{end}}
-    </schemas>
-</components>
+<?php
+
+declare(strict_types=1);
+
+namespace App\Api\{{.Module}}\Api;
+
+class {{.Operation}}
+{
+    public function __construct(
+        {{- range $key, $value := .Properties}}
+        public {{.Type}} ${{.Name}},
+        {{- end}}
+    ) {
+    }
+}

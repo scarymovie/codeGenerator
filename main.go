@@ -69,6 +69,7 @@ func processFile(path string) {
 	processFileController(path, openAPI)
 	processFileAction(path, openAPI)
 	processFileDefault(path, openAPI)
+	processSchemas(path, openAPI)
 }
 
 func processFileController(path string, openAPI OpenAPI) {
@@ -119,6 +120,18 @@ func processFileDefault(path string, openAPI OpenAPI) {
 	}
 }
 
+func processSchemas(path string, openAPI OpenAPI) {
+	tmpl, err := template.ParseFiles("templateNwk.txt")
+	if err != nil {
+		fmt.Printf("Error loading template: %s\n", err)
+		return
+	}
+
+	for schemaName, schema := range openAPI.Components.Schemas {
+		generateSchemaFile(tmpl, path, schemaName, schema)
+	}
+}
+
 func getYamlName(path string) string {
 	yamlName := strings.Replace(path, "src/", "", -1)
 	return strings.Replace(yamlName, ".yaml", "", +1)
@@ -151,4 +164,65 @@ func generateFile(tmpl *template.Template, yamlName string, operationId string, 
 	}
 
 	fmt.Printf("Generated file: %s\n", fileName)
+}
+
+func generateSchemaFile(tmpl *template.Template, path string, schemaName string, schema struct {
+	Type        string   `yaml:"type"`
+	Description string   `yaml:"description"`
+	Required    []string `yaml:"required"`
+	Properties  map[string]struct {
+		Type        string `yaml:"type"`
+		Description string `yaml:"description"`
+		Format      string `yaml:"format"`
+	} `yaml:"properties"`
+}) {
+	fileName := fmt.Sprintf("%s.php", strings.Title(schemaName))
+
+	file, err := os.Create(fileName)
+	if err != nil {
+		fmt.Printf("Error creating file: %s\n", err)
+		return
+	}
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			fmt.Printf("Error closing file: %s\n", err)
+		}
+	}(file)
+
+	properties := make(map[string]map[string]string)
+	for propName, prop := range schema.Properties {
+		propType := prop.Type
+		if !contains(schema.Required, propName) {
+			propType += "?"
+		}
+		properties[propName] = map[string]string{
+			"Type": propType,
+			"Name": propName,
+		}
+	}
+
+	moduleName := strings.Title(strings.TrimSuffix(filepath.Base(path), ".yaml"))
+
+	err = tmpl.Execute(file, map[string]interface{}{
+		"Module":     moduleName,
+		"Operation":  strings.Title(schemaName),
+		"Properties": properties,
+	})
+
+	if err != nil {
+		fmt.Printf("Error executing template: %s\n", err)
+		return
+	}
+
+	fmt.Printf("Generated file: %s\n", fileName)
+}
+
+func contains(slice []string, item string) bool {
+	for _, a := range slice {
+		if a == item {
+			return true
+		}
+	}
+	return false
 }
