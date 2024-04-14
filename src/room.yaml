@@ -1,0 +1,65 @@
+openapi: "3.0.0"
+
+info:
+  version: 0.0.1
+  title: Poker Room Api
+  contact:
+    name: jeka
+    email: team@jeka.ru
+
+servers:
+  - url: http://localhost:8080/
+
+paths:
+
+  /api/getRooms:
+    get:
+      operationId: getRooms
+      responses:
+        '200':
+          description: C
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NwkRoom"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NwkError"
+
+components:
+
+    schemas:
+
+      NwkRoom:
+        type: object
+        properties:
+          code:
+            type: string
+          name:
+            type: string
+          uid:
+            type: string
+        required:
+          - name
+          - code
+          - uid
+
+      NwkError:
+        type: object
+        description: Описание ошибки
+        required:
+          - code
+          - message
+        properties:
+          code:
+            type: integer
+            format: int32
+            description: Код ошибки
+          message:
+            type: string
+            description: Сообщение об ошибке

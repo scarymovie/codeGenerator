@@ -1,0 +1,14 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Api\{{.Module}}\Api;
+
+class {{.Operation}}ResultDefault
+{
+    public function __construct(
+        public NwkError $content,
+        public int $statusCode,
+    ) {
+    }
+}

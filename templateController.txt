@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Api\{{.Module}}\Controller;
+
+use App\Api\Controller;
+use App\Api\{{.Module}}\Api\{{.Operation}}Action;
+use App\Api\{{.Module}}\Api\{{.Operation}}Result200;
+use App.Api\{{.Module}}\Api\{{.Operation}}ResultDefault;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class {{.Operation}}Controller extends Controller
+{
+    public function __construct(
+        private readonly {{.Operation}}Action ${{.actionVar}}Action,
+        protected EntityManagerInterface $entityManager
+    ) {
+        parent::__construct($entityManager);
+    }
+
+    public function do(Request $request): Response
+    {
+        try {
+            $this->entityManager->beginTransaction();
+            $result = $this->{{.actionVar}}Action->do();
+            $this->entityManager->flush();
+            $this->entityManager->commit();
+        } catch (Exception $e) {
+            $this->entityManager->rollBack();
+            $result = $this->{{.actionVar}}Action->createExceptedResult($e);
+        }
+
+//        ob_clean();
+
+        if ($result instanceof {{.Operation}}Result200) {
+            $headers = [
+                'Content-Type' => 'application/json',
+            ];
+            return new Response(
+                json_encode($result->content),
+                200,
+                $headers
+            );
+        }
+
+        if ($result instanceof {{.Operation}}ResultDefault) {
+            $headers = [
+                'Content-Type' => 'application/json',
+            ];
+            return new Response(
+                json_encode($result->content),
+                $result->statusCode,
+                $headers
+            );
+        }
+        return new Response('', 500);
+    }
+}

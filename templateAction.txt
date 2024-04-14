@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Api\{{.Module}}\Api;
+
+use Exception;
+
+interface {{.Operation}}Action
+{
+    public function do(): {{.Operation}}Result200;
+    public function createExceptedResult(Exception $exception): {{.Operation}}ResultDefault;
+}
