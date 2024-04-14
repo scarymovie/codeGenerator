@@ -2,7 +2,7 @@ openapi: "3.0.0"
 
 info:
   version: 0.0.1
-  title: Poker Room Api
+  title: Poker Gamer Api
   contact:
     name: jeka
     email: team@jeka.ru
