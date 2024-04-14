@@ -68,6 +68,7 @@ func processFile(path string) {
 
 	processFileController(path, openAPI)
 	processFileAction(path, openAPI)
+	processFileDefault(path, openAPI)
 }
 
 func processFileController(path string, openAPI OpenAPI) {
@@ -98,6 +99,22 @@ func processFileAction(path string, openAPI OpenAPI) {
 	for _, methods := range openAPI.Paths {
 		for _, operation := range methods {
 			generateFile(tmpl, yamlName, operation.OperationId, "Action")
+		}
+	}
+}
+
+func processFileDefault(path string, openAPI OpenAPI) {
+	tmpl, err := template.ParseFiles("templateResultDefault.txt")
+	if err != nil {
+		fmt.Printf("Error loading template: %s\n", err)
+		return
+	}
+
+	yamlName := getYamlName(path)
+
+	for _, methods := range openAPI.Paths {
+		for _, operation := range methods {
+			generateFile(tmpl, yamlName, operation.OperationId, "ResultDefault")
 		}
 	}
 }
