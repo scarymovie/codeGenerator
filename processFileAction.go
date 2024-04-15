@@ -22,13 +22,13 @@ func processFileAction(path string, openAPI OpenAPI) {
 			for i, parameter := range operation.Parameters {
 				parameters[i] = fmt.Sprintf("%s $%s", parameter.Schema.Type, parameter.Name)
 			}
-			generateActionFile(tmpl, yamlName, operation.OperationId, "Action", parameters)
+			generateActionFile(tmpl, yamlName, operation.OperationId, "Action", parameters, path)
 		}
 	}
 }
 
-func generateActionFile(tmpl *template.Template, yamlName string, operationId string, fileType string, parameters []string) {
-	fileName := fmt.Sprintf("%s%s.php", strings.Title(operationId), fileType)
+func generateActionFile(tmpl *template.Template, yamlName string, operationId string, fileType string, parameters []string, path string) {
+	fileName := fmt.Sprintf("%s/%s%s.php", path, strings.Title(operationId), fileType)
 
 	file, err := os.Create(fileName)
 	if err != nil {

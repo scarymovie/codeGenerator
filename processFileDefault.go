@@ -16,7 +16,7 @@ func processFileDefault(path string, openAPI OpenAPI) {
 
 	for _, methods := range openAPI.Paths {
 		for _, operation := range methods {
-			generateFile(tmpl, yamlName, operation.OperationId, "ResultDefault")
+			generateFile(tmpl, yamlName, operation.OperationId, "ResultDefault", path)
 		}
 	}
 }

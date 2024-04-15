@@ -16,7 +16,7 @@ func processFileController(path string, openAPI OpenAPI) {
 
 	for _, methods := range openAPI.Paths {
 		for _, operation := range methods {
-			generateFile(tmpl, yamlName, operation.OperationId, "Controller")
+			generateFile(tmpl, yamlName, operation.OperationId, "Controller", path)
 		}
 	}
 }

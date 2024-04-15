@@ -41,7 +41,7 @@ func processResponses(path string, openAPI OpenAPI) {
 
 func generateResponseFile(tmpl *template.Template, path string, ref string) {
 	schemaName := strings.Split(ref, "/")[len(strings.Split(ref, "/"))-1]
-	fileName := fmt.Sprintf("%sResult200.php", strings.Title(schemaName))
+	fileName := fmt.Sprintf("%s/%sResult200.php", path, strings.Title(schemaName))
 
 	file, err := os.Create(fileName)
 	if err != nil {
