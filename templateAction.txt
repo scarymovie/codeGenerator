@@ -8,6 +8,6 @@ use Exception;
 
 interface {{.Operation}}Action
 {
-    public function do(): {{.Operation}}Result200;
+    public function do({{.Parameters}}): {{.Operation}}Result200;
     public function createExceptedResult(Exception $exception): {{.Operation}}ResultDefault;
 }

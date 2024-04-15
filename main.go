@@ -11,7 +11,16 @@ import (
 type OpenAPI struct {
 	Paths map[string]map[string]struct {
 		OperationId string `yaml:"operationId"`
-		Responses   map[string]struct {
+		Parameters  []struct {
+			Name        string `yaml:"name"`
+			Description string `yaml:"description"`
+			In          string `yaml:"in"`
+			Schema      struct {
+				Type string `yaml:"type"`
+			} `yaml:"schema"`
+			Required bool `yaml:"required"`
+		} `yaml:"parameters"`
+		Responses map[string]struct {
 			Description string `yaml:"description"`
 			Content     map[string]struct {
 				Schema struct {

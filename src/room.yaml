@@ -31,35 +31,66 @@ paths:
               schema:
                 $ref: "#/components/schemas/NwkError"
 
+  /api/room/{roomId}/connect/{gamerId}:
+    post:
+      parameters:
+        - name: roomId
+          description: Идентификатор услуги
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: gamerId
+          description: Идентификатор игрока
+          in: path
+          schema:
+            type: string
+          required: true
+      operationId: connectGamerToRoom
+      responses:
+        '200':
+          description: Добавление игрока в лобби
+          content:
+            application/json:
+              schema:
+                type: string
+                description: success
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NwkError"
+
 components:
 
-    schemas:
+  schemas:
 
-      NwkRoom:
-        type: object
-        properties:
-          code:
-            type: string
-          name:
-            type: string
-          uid:
-            type: string
-        required:
-          - name
-          - code
-          - uid
+    NwkRoom:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        uid:
+          type: string
+      required:
+        - name
+        - code
+        - uid
 
-      NwkError:
-        type: object
-        description: Описание ошибки
-        required:
-          - code
-          - message
-        properties:
-          code:
-            type: integer
-            format: int32
-            description: Код ошибки
-          message:
-            type: string
-            description: Сообщение об ошибке
+    NwkError:
+      type: object
+      description: Описание ошибки
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Код ошибки
+        message:
+          type: string
+          description: Сообщение об ошибке

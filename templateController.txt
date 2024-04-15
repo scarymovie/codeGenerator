@@ -7,7 +7,7 @@ namespace App\Api\{{.Module}}\Controller;
 use App\Api\Controller;
 use App\Api\{{.Module}}\Api\{{.Operation}}Action;
 use App\Api\{{.Module}}\Api\{{.Operation}}Result200;
-use App.Api\{{.Module}}\Api\{{.Operation}}ResultDefault;
+use App\Api\{{.Module}}\Api\{{.Operation}}ResultDefault;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
