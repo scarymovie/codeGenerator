@@ -8,6 +8,45 @@ import (
 	"strings"
 )
 
+type OpenAPI struct {
+	Paths map[string]map[string]struct {
+		OperationId string `yaml:"operationId"`
+		Parameters  []struct {
+			Name        string `yaml:"name"`
+			Description string `yaml:"description"`
+			In          string `yaml:"in"`
+			Schema      struct {
+				Type string `yaml:"type"`
+			} `yaml:"schema"`
+			Required bool `yaml:"required"`
+		} `yaml:"parameters"`
+		Responses map[string]struct {
+			Description string `yaml:"description"`
+			Content     map[string]struct {
+				Schema struct {
+					Type  string `yaml:"type"`
+					Items struct {
+						Ref string `yaml:"$ref"`
+					} `yaml:"items"`
+					Ref string `yaml:"$ref"`
+				} `yaml:"schema"`
+			} `yaml:"content"`
+		} `yaml:"responses"`
+	} `yaml:"paths"`
+	Components struct {
+		Schemas map[string]struct {
+			Type        string   `yaml:"type"`
+			Description string   `yaml:"description"`
+			Required    []string `yaml:"required"`
+			Properties  map[string]struct {
+				Type        string `yaml:"type"`
+				Description string `yaml:"description"`
+				Format      string `yaml:"format"`
+			} `yaml:"properties"`
+		} `yaml:"schemas"`
+	} `yaml:"components"`
+}
+
 func main() {
 	srcDir := "./src"
 	err := processDirectory(srcDir)
@@ -46,32 +85,21 @@ func processFile(path string) {
 		return
 	}
 
+	// Получаем имя файла без расширения
 	fileName := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
 
-	newDirPath := filepath.Join("./", strings.Title(fileName))
+	// Создаем новую директорию с именем файла
+	newDirPath := filepath.Join("./", fileName)
 	err = os.MkdirAll(newDirPath, os.ModePerm)
 	if err != nil {
 		fmt.Printf("Error creating directory: %s\n", err)
 		return
 	}
 
-	controllerDirPath := filepath.Join(newDirPath, "Controller")
-	err = os.MkdirAll(controllerDirPath, os.ModePerm)
-	if err != nil {
-		fmt.Printf("Error creating controller directory: %s\n", err)
-		return
-	}
-
-	apiDirPath := filepath.Join(newDirPath, "Api")
-	err = os.MkdirAll(controllerDirPath, os.ModePerm)
-	if err != nil {
-		fmt.Printf("Error creating api directory: %s\n", err)
-		return
-	}
-
-	processFileController(filepath.Join(controllerDirPath, ""), openAPI)
-	processFileAction(filepath.Join(apiDirPath, ""), openAPI)
-	processFileDefault(filepath.Join(apiDirPath, ""), openAPI)
-	processSchemas(filepath.Join(apiDirPath, ""), openAPI)
-	processResponses(filepath.Join(apiDirPath, ""), openAPI)
+	// Обрабатываем файлы, используя новый путь к директории
+	processFileController(filepath.Join(newDirPath, ""), openAPI)
+	processFileAction(filepath.Join(newDirPath, ""), openAPI)
+	processFileDefault(filepath.Join(newDirPath, ""), openAPI)
+	processSchemas(filepath.Join(newDirPath, ""), openAPI)
+	processResponses(filepath.Join(newDirPath, ""), openAPI)
 }
