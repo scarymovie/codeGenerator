@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-func processFileAction(path string, openAPI OpenAPI) {
+func processFileAction(path string, directory string, openAPI OpenAPI) {
 	tmpl, err := template.ParseFiles("templateAction.txt")
 	if err != nil {
 		fmt.Printf("Error loading template: %s\n", err)
@@ -22,13 +22,13 @@ func processFileAction(path string, openAPI OpenAPI) {
 			for i, parameter := range operation.Parameters {
 				parameters[i] = fmt.Sprintf("%s $%s", parameter.Schema.Type, parameter.Name)
 			}
-			generateActionFile(tmpl, yamlName, operation.OperationId, "Action", parameters, path)
+			generateActionFile(tmpl, yamlName, operation.OperationId, "Action", parameters, path, directory)
 		}
 	}
 }
 
-func generateActionFile(tmpl *template.Template, yamlName string, operationId string, fileType string, parameters []string, path string) {
-	fileName := fmt.Sprintf("%s/%s%s.php", path, strings.Title(operationId), fileType)
+func generateActionFile(tmpl *template.Template, yamlName string, operationId string, fileType string, parameters []string, path string, directory string) {
+	fileName := fmt.Sprintf("%s/%s/%s%s.php", strings.Title(path), strings.Title(directory), fileType, strings.Title(operationId))
 
 	file, err := os.Create(fileName)
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-func processResponses(path string, openAPI OpenAPI) {
+func processResponses(path string, directory string, openAPI OpenAPI) {
 	for _, methods := range openAPI.Paths {
 		for _, response := range methods {
 			for _, responses := range response.Responses {
@@ -24,14 +24,14 @@ func processResponses(path string, openAPI OpenAPI) {
 							fmt.Printf("Error loading template: %s\n", err)
 							return
 						}
-						generateResponseFile(tmpl, path, content.Schema.Items.Ref)
+						generateResponseFile(tmpl, path, content.Schema.Items.Ref, directory)
 					} else if content.Schema.Ref != "" {
 						tmpl, err := template.ParseFiles("templateResult200.txt")
 						if err != nil {
 							fmt.Printf("Error loading template: %s\n", err)
 							return
 						}
-						generateResponseFile(tmpl, path, content.Schema.Ref)
+						generateResponseFile(tmpl, path, content.Schema.Ref, directory)
 					}
 				}
 			}
@@ -39,9 +39,9 @@ func processResponses(path string, openAPI OpenAPI) {
 	}
 }
 
-func generateResponseFile(tmpl *template.Template, path string, ref string) {
+func generateResponseFile(tmpl *template.Template, path string, ref string, directory string) {
 	schemaName := strings.Split(ref, "/")[len(strings.Split(ref, "/"))-1]
-	fileName := fmt.Sprintf("%s/%sResult200.php", path, strings.Title(schemaName))
+	fileName := fmt.Sprintf("%s/%s/%sResult200.php", strings.Title(path), strings.Title(directory), strings.Title(schemaName))
 
 	file, err := os.Create(fileName)
 	if err != nil {

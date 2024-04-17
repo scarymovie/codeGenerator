@@ -7,12 +7,12 @@ import (
 	"text/template"
 )
 
-func generateFile(tmpl *template.Template, yamlName string, operationId string, fileType string, path string) {
+func generateFile(tmpl *template.Template, yamlName string, operationId string, fileType string, path string, directory string) {
 	if operationId == "" {
 		fmt.Println("Warning: operationId is empty. Skipping file generation.")
 		return
 	}
-	fileName := fmt.Sprintf("%s/%s%s.php", path, strings.Title(operationId), fileType)
+	fileName := fmt.Sprintf("%s/%s/%s%s.php", strings.Title(path), directory, strings.Title(operationId), fileType)
 
 	file, err := os.Create(fileName)
 	if err != nil {

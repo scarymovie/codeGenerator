@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-func processSchemas(path string, openAPI OpenAPI) {
+func processSchemas(path string, directory string, openAPI OpenAPI) {
 	tmpl, err := template.ParseFiles("templateNwk.txt")
 	if err != nil {
 		fmt.Printf("Error loading template: %s\n", err)
@@ -16,7 +16,7 @@ func processSchemas(path string, openAPI OpenAPI) {
 	}
 
 	for schemaName, schema := range openAPI.Components.Schemas {
-		generateSchemaFile(tmpl, path, schemaName, schema)
+		generateSchemaFile(tmpl, path, schemaName, schema, directory)
 	}
 }
 
@@ -34,8 +34,8 @@ func generateSchemaFile(tmpl *template.Template, path string, schemaName string,
 		Description string `yaml:"description"`
 		Format      string `yaml:"format"`
 	} `yaml:"properties"`
-}) {
-	fileName := fmt.Sprintf("%s/%s.php", path, strings.Title(schemaName))
+}, directory string) {
+	fileName := fmt.Sprintf("%s/%s/%s.php", strings.Title(path), strings.Title(directory), strings.Title(schemaName))
 
 	file, err := os.Create(fileName)
 	if err != nil {

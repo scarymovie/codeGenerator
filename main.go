@@ -46,21 +46,30 @@ func processFile(path string) {
 		return
 	}
 
-	// Получаем имя файла без расширения
 	fileName := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
 
-	// Создаем новую директорию с именем файла
 	newDirPath := filepath.Join("./", fileName)
-	err = os.MkdirAll(newDirPath, os.ModePerm)
+	err = os.MkdirAll(strings.Title(newDirPath), os.ModePerm)
+	if err != nil {
+		fmt.Printf("Error creating directory: %s\n", err)
+		return
+	}
+	controllerDirPath := filepath.Join(newDirPath + "/Controller")
+	err = os.MkdirAll(strings.Title(controllerDirPath), os.ModePerm)
+	if err != nil {
+		fmt.Printf("Error creating directory: %s\n", err)
+		return
+	}
+	apiDirPath := filepath.Join(newDirPath + "/Api")
+	err = os.MkdirAll(strings.Title(apiDirPath), os.ModePerm)
 	if err != nil {
 		fmt.Printf("Error creating directory: %s\n", err)
 		return
 	}
 
-	// Обрабатываем файлы, используя новый путь к директории
-	processFileController(filepath.Join(newDirPath, ""), openAPI)
-	processFileAction(filepath.Join(newDirPath, ""), openAPI)
-	processFileDefault(filepath.Join(newDirPath, ""), openAPI)
-	processSchemas(filepath.Join(newDirPath, ""), openAPI)
-	processResponses(filepath.Join(newDirPath, ""), openAPI)
+	processFileController(filepath.Join(newDirPath, ""), "Controller", openAPI)
+	processFileAction(filepath.Join(newDirPath, ""), "Api", openAPI)
+	processFileDefault(filepath.Join(newDirPath, ""), "Api", openAPI)
+	processSchemas(filepath.Join(newDirPath, ""), "Api", openAPI)
+	processResponses(filepath.Join(newDirPath, ""), "Api", openAPI)
 }
