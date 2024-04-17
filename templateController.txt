@@ -26,7 +26,8 @@ class {{.Operation}}Controller extends Controller
     {
         try {
             $this->entityManager->beginTransaction();
-            $result = $this->{{.actionVar}}Action->do();
+            {{.actionParams}}
+            $result = $this->{{.actionVar}}Action->do({{.actionArgs}});
             $this->entityManager->flush();
             $this->entityManager->commit();
         } catch (Exception $e) {

@@ -8,7 +8,7 @@ import (
 )
 
 func processFileController(path string, directory string, actionParams []string, openAPI OpenAPI) {
-	tmpl, err := template.ParseFiles("templateController.go")
+	tmpl, err := template.ParseFiles("templateController.txt")
 	if err != nil {
 		fmt.Printf("Error loading template: %s\n", err)
 		return
@@ -49,11 +49,27 @@ func generateControllerFile(tmpl *template.Template, yamlName string, actionPara
 		}
 	}
 
+	actionParamsDeclaration := ""
+	actionArgs := ""
+	for i, param := range actionParams {
+		if i == len(actionParams)-1 {
+			actionParamsDeclaration += fmt.Sprintf("$%s = $request->get('%s');\n        ", param, param)
+		} else {
+			actionParamsDeclaration += fmt.Sprintf("$%s = $request->get('%s');\n\t        ", param, param)
+		}
+		if i == len(actionParams)-1 {
+			actionArgs += fmt.Sprintf("$%s", param)
+		} else {
+			actionArgs += fmt.Sprintf("$%s,", param)
+		}
+	}
+
 	err = tmpl.Execute(file, map[string]string{
 		"Module":       strings.Title(yamlName),
 		"Operation":    strings.Title(operationId),
 		"actionVar":    strings.ToLower(string(operationId[0])) + operationId[1:],
-		"actionParams": strings.Join(actionParams, ","),
+		"actionParams": actionParamsDeclaration,
+		"actionArgs":   actionArgs,
 	})
 
 	if err != nil {
