@@ -67,8 +67,8 @@ func processFile(path string) {
 		return
 	}
 
-	processFileController(filepath.Join(newDirPath, ""), "Controller", openAPI)
-	processFileAction(filepath.Join(newDirPath, ""), "Api", openAPI)
+	actionParams := processFileAction(filepath.Join(newDirPath, ""), "Api", openAPI)
+	processFileController(filepath.Join(newDirPath, ""), "Controller", actionParams, openAPI)
 	processFileDefault(filepath.Join(newDirPath, ""), "Api", openAPI)
 	processSchemas(filepath.Join(newDirPath, ""), "Api", openAPI)
 	processResponses(filepath.Join(newDirPath, ""), "Api", openAPI)
