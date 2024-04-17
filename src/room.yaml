@@ -35,7 +35,7 @@ paths:
     post:
       parameters:
         - name: roomId
-          description: Идентификатор услуги
+          description: Идентификатор комнаты
           in: path
           schema:
             type: string
@@ -55,6 +55,32 @@ paths:
               schema:
                 type: string
                 description: success
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NwkError"
+
+  /api/room/{roomId}/gamers/list:
+    get:
+      parameters:
+        - name: roomId
+          description: Идентификатор услуги
+          in: path
+          schema:
+            type: string
+          required: true
+      operationId: getRoomGamers
+      responses:
+        '200':
+          description: Добавление игрока в лобби
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
         default:
           description: unexpected error
           content:
