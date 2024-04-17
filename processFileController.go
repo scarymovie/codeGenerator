@@ -50,8 +50,18 @@ func generateControllerFile(tmpl *template.Template, yamlName string, actionPara
 	}
 
 	actionParamsDeclaration := ""
-	for _, param := range actionParams {
-		actionParamsDeclaration += fmt.Sprintf("${%s} = $request->get('%s');\n\t", param, param)
+	actionArgs := ""
+	for i, param := range actionParams {
+		if i == len(actionParams)-1 {
+			actionParamsDeclaration += fmt.Sprintf("$%s = $request->get('%s');\n        ", param, param)
+		} else {
+			actionParamsDeclaration += fmt.Sprintf("$%s = $request->get('%s');\n\t        ", param, param)
+		}
+		if i == len(actionParams)-1 {
+			actionArgs += fmt.Sprintf("$%s", param)
+		} else {
+			actionArgs += fmt.Sprintf("$%s,", param)
+		}
 	}
 
 	err = tmpl.Execute(file, map[string]string{
@@ -59,6 +69,7 @@ func generateControllerFile(tmpl *template.Template, yamlName string, actionPara
 		"Operation":    strings.Title(operationId),
 		"actionVar":    strings.ToLower(string(operationId[0])) + operationId[1:],
 		"actionParams": actionParamsDeclaration,
+		"actionArgs":   actionArgs,
 	})
 
 	if err != nil {
