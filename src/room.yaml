@@ -73,12 +73,12 @@ components:
           type: string
         name:
           type: string
-        uid:
+        id:
           type: string
       required:
         - name
         - code
-        - uid
+        - id
 
     NwkError:
       type: object
