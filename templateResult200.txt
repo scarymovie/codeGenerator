@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\{{.Module}}\Api;
 
-class GetRoomsResult200
+class {{.Operation}}Result200
 {
     public function __construct(
         public {{.NwkDto}} $content,

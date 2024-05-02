@@ -30,7 +30,7 @@ func processFileAction(path string, directory string, openAPI OpenAPI) []string 
 }
 
 func generateActionFile(tmpl *template.Template, yamlName string, operationId string, fileType string, parameters []string, path string, directory string) []string {
-	fileName := fmt.Sprintf("%s/%s/%s%s.php", strings.Title(path), strings.Title(directory), fileType, strings.Title(operationId))
+	fileName := fmt.Sprintf("%s/%s/%s%s.php", strings.Title(path), strings.Title(directory), strings.Title(operationId), fileType)
 	file, err := os.Create(fileName)
 	if err != nil {
 		println("Error creating file: %s\n", err)

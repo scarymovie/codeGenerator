@@ -24,14 +24,14 @@ func processResponses(path string, directory string, openAPI OpenAPI) {
 							fmt.Printf("Error loading template: %s\n", err)
 							return
 						}
-						generateResponseFile(tmpl, path, content.Schema.Items.Ref, directory)
+						generateResponseFile(tmpl, path, content.Schema.Items.Ref, directory, response.OperationId)
 					} else if content.Schema.Ref != "" {
 						tmpl, err := template.ParseFiles("templateResult200.txt")
 						if err != nil {
 							fmt.Printf("Error loading template: %s\n", err)
 							return
 						}
-						generateResponseFile(tmpl, path, content.Schema.Ref, directory)
+						generateResponseFile(tmpl, path, content.Schema.Ref, directory, response.OperationId)
 					}
 				}
 			}
@@ -39,10 +39,9 @@ func processResponses(path string, directory string, openAPI OpenAPI) {
 	}
 }
 
-func generateResponseFile(tmpl *template.Template, path string, ref string, directory string) {
+func generateResponseFile(tmpl *template.Template, path string, ref string, directory string, operation string) {
 	schemaName := strings.Split(ref, "/")[len(strings.Split(ref, "/"))-1]
-	fileName := fmt.Sprintf("%s/%s/%sResult200.php", strings.Title(path), strings.Title(directory), strings.Title(schemaName))
-
+	fileName := fmt.Sprintf("%s/%s/%sResult200.php", strings.Title(path), strings.Title(directory), strings.Title(operation))
 	file, err := os.Create(fileName)
 	if err != nil {
 		fmt.Printf("Error creating file: %s\n", err)
@@ -59,7 +58,7 @@ func generateResponseFile(tmpl *template.Template, path string, ref string, dire
 
 	err = tmpl.Execute(file, map[string]interface{}{
 		"Module":      moduleName,
-		"Operation":   strings.Title(schemaName),
+		"Operation":   strings.Title(operation),
 		"NwkDto":      schemaName,
 		"NwkDtoArray": schemaName,
 	})

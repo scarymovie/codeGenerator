@@ -12,16 +12,16 @@ servers:
 
 paths:
 
-  /api/gamer/create:
+  /api/user/create:
     get:
-      operationId: createGamer
+      operationId: createUser
       responses:
         '200':
-          description: Создание игрока
+          description: Создание пользователя
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/NwkGamer"
+                $ref: "#/components/schemas/NwkUser"
         default:
           description: unexpected error
           content:
@@ -33,7 +33,7 @@ components:
 
   schemas:
 
-    NwkGamer:
+    NwkUser:
       type: object
       properties:
         id:
@@ -42,7 +42,6 @@ components:
           type: string
       required:
         - id
-        - createdAt
 
     NwkError:
       type: object
