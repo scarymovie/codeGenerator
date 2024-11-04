@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"fmt"
@@ -8,30 +8,7 @@ import (
 	"strings"
 )
 
-func main() {
-	srcDir := "./src"
-	err := processDirectory(srcDir)
-	if err != nil {
-		fmt.Printf("Error walking the path %v: %v\n", srcDir, err)
-	}
-}
-
-func processDirectory(srcDir string) error {
-	return filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if !info.IsDir() && strings.HasSuffix(info.Name(), ".yaml") {
-			fmt.Println("Processing file:", path)
-			processFile(path)
-		}
-
-		return nil
-	})
-}
-
-func processFile(path string) {
+func ProcessFile(path string) {
 	yamlFile, err := os.ReadFile(path)
 	if err != nil {
 		fmt.Printf("Error reading YAML file: %s\n", err)
