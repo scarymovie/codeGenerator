@@ -5,6 +5,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"os"
 	"path/filepath"
+	"phpGenerator/internal"
 	"strings"
 )
 
@@ -38,7 +39,7 @@ func processFile(path string) {
 		return
 	}
 
-	var openAPI OpenAPI
+	var openAPI internal.OpenAPI
 
 	err = yaml.Unmarshal(yamlFile, &openAPI)
 	if err != nil {
@@ -67,9 +68,9 @@ func processFile(path string) {
 		return
 	}
 
-	actionParams := processFileAction(filepath.Join(newDirPath, ""), "Api", openAPI)
-	processFileController(filepath.Join(newDirPath, ""), "Controller", actionParams, openAPI)
-	processFileDefault(filepath.Join(newDirPath, ""), "Api", openAPI)
-	processSchemas(filepath.Join(newDirPath, ""), "Api", openAPI)
-	processResponses(filepath.Join(newDirPath, ""), "Api", openAPI)
+	actionParams := internal.ProcessFileAction(filepath.Join(newDirPath, ""), "Api", openAPI)
+	internal.ProcessFileController(filepath.Join(newDirPath, ""), "Controller", actionParams, openAPI)
+	internal.ProcessFileDefault(filepath.Join(newDirPath, ""), "Api", openAPI)
+	internal.ProcessSchemas(filepath.Join(newDirPath, ""), "Api", openAPI)
+	internal.ProcessResponses(filepath.Join(newDirPath, ""), "Api", openAPI)
 }

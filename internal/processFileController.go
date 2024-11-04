@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-func processFileController(path string, directory string, actionParams []string, openAPI OpenAPI) {
+func ProcessFileController(path string, directory string, actionParams []string, openAPI OpenAPI) {
 	tmpl, err := template.ParseFiles("templateController.txt")
 	if err != nil {
 		fmt.Printf("Error loading template: %s\n", err)

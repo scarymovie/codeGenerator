@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-func processSchemas(path string, directory string, openAPI OpenAPI) {
+func ProcessSchemas(path string, directory string, openAPI OpenAPI) {
 	tmpl, err := template.ParseFiles("templateNwk.txt")
 	if err != nil {
 		fmt.Printf("Error loading template: %s\n", err)

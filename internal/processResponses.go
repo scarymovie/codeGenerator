@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-func processResponses(path string, directory string, openAPI OpenAPI) {
+func ProcessResponses(path string, directory string, openAPI OpenAPI) {
 	for _, methods := range openAPI.Paths {
 		for _, response := range methods {
 			for _, responses := range response.Responses {

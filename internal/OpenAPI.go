@@ -1,4 +1,4 @@
-package main
+package internal
 
 type OpenAPI struct {
 	Paths map[string]map[string]struct {
