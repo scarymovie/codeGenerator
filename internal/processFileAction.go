@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-func ProcessFileAction(path string, directory string, openAPI OpenAPI) []string {
+func processFileAction(path string, directory string, openAPI OpenAPI) []string {
 	tmpl, err := template.ParseFiles("templateAction.txt")
 	if err != nil {
 		println("Error loading template: %s\n", err)

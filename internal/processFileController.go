@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-func ProcessFileController(path string, directory string, actionParams []string, openAPI OpenAPI) {
+func processFileController(path string, directory string, actionParams []string, openAPI OpenAPI) {
 	tmpl, err := template.ParseFiles("templateController.txt")
 	if err != nil {
 		fmt.Printf("Error loading template: %s\n", err)

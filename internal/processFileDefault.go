@@ -5,7 +5,7 @@ import (
 	"text/template"
 )
 
-func ProcessFileDefault(path string, directory string, openAPI OpenAPI) {
+func processFileDefault(path string, directory string, openAPI OpenAPI) {
 	tmpl, err := template.ParseFiles("templateResultDefault.txt")
 	if err != nil {
 		fmt.Printf("Error loading template: %s\n", err)

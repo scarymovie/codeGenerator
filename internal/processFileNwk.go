@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-func ProcessSchemas(path string, directory string, openAPI OpenAPI) {
+func processSchemas(path string, directory string, openAPI OpenAPI) {
 	tmpl, err := template.ParseFiles("templateNwk.txt")
 	if err != nil {
 		fmt.Printf("Error loading template: %s\n", err)
